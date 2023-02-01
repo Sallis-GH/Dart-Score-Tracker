@@ -4,7 +4,8 @@ import { useState } from 'react';
 
 const game301 = () => {
   const [score, setScore] = useState(301);
-
+  
+  //TODO Logic for stopping at zero with valid score. Reset score to previous with bust. add history 
   return (
     <main className='bg-[#121212] h-screen p-2'>
       <Header title='501' />
