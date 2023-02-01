@@ -1,7 +1,5 @@
 import { EventHandler, MouseEventHandler } from 'react';
 
-//handleThrow(score - Number((e.target as HTMLInputElement).id))
-
 const DartBoard = ({ handleThrow }: { handleThrow: Function }) => {
 
   const calculateThrow = (dartThrow:string) => {
