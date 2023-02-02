@@ -1,5 +1,5 @@
 # Dart-Score-Tracker  **WIP**
-An application to help keep scoring during dart games.
+A simple applicaton to help keep scoring during dart games.
 
 ## Getting Started
 
