@@ -1,4 +1,4 @@
-# Dart-Score-Tracker
+# Dart-Score-Tracker  **WIP**
 An application to help keep scoring during dart games.
 
 ## Getting Started
