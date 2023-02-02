@@ -1,8 +1,10 @@
 import DartBoard from '@/components/DartBoard';
 import Header from '@/components/Header';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { IHistory } from '@/interface';
 import { handleHistory, handleScore } from '@/helper';
+
+//todo add logic for bust
 
 const game501 = () => {
   const handleThrow = (targetHit: string, value: number) => {
@@ -10,50 +12,51 @@ const game501 = () => {
     setHistory(handleHistory(newHistory, targetHit, value));
     setScore(handleScore(score, value, targetHit));
   };
-
-  const [currentRound, setCurrentRound] = useState(1);
   const [score, setScore] = useState(501);
   const [history, setHistory] = useState<IHistory[]>([
-    { hitTargets: [], score: 0 },
+    { hitTargets: [], score: 0, bust: false },
   ]);
 
   return (
-    <main className='bg-[#121212] h-screen p-2'>
+    <main className='p-2'>
       <Header title='501' />
-
-      <section className='mt-4 flex flex-col gap-4'>
-        <DartBoard handleThrow={handleThrow} />
-        <div className='flex flex-col h-16 items-center justify-center gap-2 mt-4'>
-          {score ? (
-            <>
-              <h2 className='text-xl font-semibold text-gray-300'>
-                Current score:
-              </h2>
-              <h3 className='text-center text-3xl font-semibold text-gray-300'>
-                {score}
-              </h3>
-            </>
-          ) : (
-            <h1 className='text-center text-3xl font-semibold text-gray-300'>
-              Winner
-            </h1>
-          )}
+      <section className='mt-4 flex flex-col gap-4 items-center'>
+        <div className='w-[300px] h-[300px]'>
+          <DartBoard handleThrow={handleThrow} />
         </div>
-        {!!history[0].hitTargets.length &&
-          history.map((round, i) => (
-            <div key={i} className='relative flex justify-around'>
-              <div className='flex gap-3 w-30'>
-                {round?.hitTargets.map((target, i) => (
-                  <h3 key={i} className='text-xl text-gray-300'>
-                    {target}
-                  </h3>
-                ))}
-                <h3 className='absolute right-10 text-xl text-gray-300'>
-                  {round.score}
+        <div className='border-4 w-[305px] h-96 rounded-lg border-gray-300 bg-gray-800 flex items-center gap-2 flex-col overflow-y-scroll'>
+          <div className='flex flex-col h-16 items-center justify-center gap-2 mt-4'>
+            {score ? (
+              <>
+                <h2 className='text-xl font-semibold text-gray-300'>
+                  Current score:
+                </h2>
+                <h3 className='text-center text-3xl font-semibold text-gray-300'>
+                  {score}
                 </h3>
+              </>
+            ) : (
+              <h1 className='text-center text-3xl font-semibold text-gray-300'>
+                Winner
+              </h1>
+            )}
+          </div>
+          {!!history[0].hitTargets.length &&
+            history.map((round, i) => (
+              <div key={i} className='flex w-[200px] justify-evenly'>
+                <div className='flex gap-3 '>
+                  <div className='grid grid-cols-3 gap-3'>
+                    {round?.hitTargets.map((target, i) => (
+                      <h3 key={i} className='text-xl text-gray-300'>
+                        {target}
+                      </h3>
+                    ))}
+                  </div>
+                  <h3 className='text-xl text-gray-300'>{round.score}</h3>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </section>
     </main>
   );

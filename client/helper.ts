@@ -1,8 +1,9 @@
 import { IHistory } from "./interface";
 
 export const handleHistory = (history: IHistory[], targetHit: string, value: number) => {
-  if (history[history.length - 1]?.hitTargets.length > 2) {
-    return [...history, { hitTargets: [targetHit], score: value }]
+  const isNewLeg = history[history.length - 1]?.hitTargets.length > 2
+  if (isNewLeg) {
+    return [...history, { hitTargets: [targetHit], score: value, bust:false }]
   }
   history[history.length - 1].hitTargets.push(targetHit);
   history[history.length - 1].score += value
