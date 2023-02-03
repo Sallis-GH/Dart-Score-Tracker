@@ -3,3 +3,9 @@ export interface IHistory {
   score: number;
   bust: boolean;
 }
+
+export interface IScoreTracker {
+  start: number,
+  current: number,
+  leg: number
+}
