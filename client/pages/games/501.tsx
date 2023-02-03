@@ -1,31 +1,40 @@
 import DartBoard from '@/components/DartBoard';
 import Header from '@/components/Header';
-import { useEffect, useState } from 'react';
-import { IHistory, IScoreTracker } from '@/interface';
-import { handleHistory, handleScore } from '@/helper';
+import { useState } from 'react';
+import { IGameState } from '@/interface';
+import { isBust } from '@/helper';
 import ScoreBoard from '@/components/ScoreBoard';
 
 //todo add logic for bust
 
 const game501 = () => {
-  const handleThrow = (targetHit: string, value: number) => {
-    const newHistory = [...history];
-    setHistory(handleHistory(newHistory, targetHit, value, score.current));
-    setScore(handleScore(score, value, targetHit));
+  const newGame = {
+    currentDart: '',
+    previousScore: 0,
+    currentScore: 510,
+    bust: false,
+    initialValue: 510,
+    initalLegScore: 510,
+    leg: [],
   };
-  const [score, setScore] = useState<IScoreTracker>({
-    start: 501,
-    current: 501,
-    leg: 501,
-  });
-  const [history, setHistory] = useState<IHistory[]>([
-    {
-      hitTargets: [],
-      score: 0,
-      bust: false },
-  ]);
-  useEffect(() => console.table
-  (history[history.length-1]), [history])
+
+  const [gameState, setGameState] = useState<IGameState>(newGame);
+
+  const handleThrow = (targetHit: string, hitScore: number) => {
+    const newGamestate = { ...gameState };
+    const { currentScore } = gameState;
+    if (!isBust({ currentScore, hitScore, targetHit })) {
+      newGamestate.leg.push('Bust');
+      setGameState({
+        ...newGamestate,
+        currentScore: newGamestate.initalLegScore,
+        bust: true,
+      });
+      return;
+    }
+    newGamestate.currentScore -= hitScore;
+    setGameState(newGamestate);
+  };
 
   return (
     <main className='p-2'>
@@ -34,7 +43,7 @@ const game501 = () => {
         <div className='w-[300px] h-[300px]'>
           <DartBoard handleThrow={handleThrow} />
         </div>
-        <ScoreBoard history={history} score={score} />
+        <ScoreBoard gameState={gameState} />
       </section>
     </main>
   );

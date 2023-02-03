@@ -3,6 +3,7 @@ import { EventHandler, MouseEventHandler } from 'react';
 const DartBoard = ({ handleThrow }: { handleThrow: Function }) => {
 
   const calculateThrow = (dartThrow:string) => {
+    //TODO make helper function
     if(!dartThrow) return
     const throwSplit = dartThrow.split('_')
     const modifier = throwSplit[0]
