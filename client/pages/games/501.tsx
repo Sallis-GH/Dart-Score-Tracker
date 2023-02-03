@@ -1,9 +1,9 @@
 import DartBoard from '@/components/DartBoard';
 import Header from '@/components/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IGameState } from '@/interface';
-import { isBust } from '@/helper';
 import ScoreBoard from '@/components/ScoreBoard';
+import { isBust } from '@/helper';
 
 //todo add logic for bust
 
@@ -15,27 +15,36 @@ const game501 = () => {
     bust: false,
     initialValue: 510,
     initalLegScore: 510,
-    leg: [],
+    leg: [[]],
   };
 
   const [gameState, setGameState] = useState<IGameState>(newGame);
 
   const handleThrow = (targetHit: string, hitScore: number) => {
     const newGamestate = { ...gameState };
-    const { currentScore } = gameState;
+    const { currentScore, leg } = gameState;
+    const lastLeg = leg[leg.length - 1];
+    const lastLegIndex = leg.length - 1;
     if (!isBust({ currentScore, hitScore, targetHit })) {
-      newGamestate.leg.push('Bust');
+      lastLeg.length < 3 && !lastLeg.includes('bust')
+        ? newGamestate.leg[lastLegIndex].push('bust')
+        : (newGamestate.leg = [...leg, ['bust']]); //ob.a = [...ob.a, [1,2,3]]
       setGameState({
         ...newGamestate,
-        currentScore: newGamestate.initalLegScore,
-        bust: true,
+        previousScore: currentScore,
+        currentScore: newGamestate.previousScore,
       });
       return;
     }
+    if (lastLeg.length === 3) newGamestate.previousScore = currentScore;
     newGamestate.currentScore -= hitScore;
+    lastLeg.length < 3 && !leg[lastLegIndex].includes('bust')
+      ? newGamestate.leg[lastLegIndex].push(targetHit)
+      : (newGamestate.leg = [...leg, [targetHit]]); //ob.a = [...ob.a, [1,2,3]]
     setGameState(newGamestate);
   };
 
+  useEffect(() => console.table(gameState), [gameState]);
   return (
     <main className='p-2'>
       <Header title='501' />

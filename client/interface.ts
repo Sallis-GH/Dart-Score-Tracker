@@ -12,10 +12,10 @@ export interface IScoreTracker {
 
 export interface IGameState {
   currentDart: string,
-  currentScore: number,
   previousScore: number,
+  currentScore: number,
   bust: boolean,
   initialValue: number,
   initalLegScore: number,
-  leg:string[]
+  leg:string[][]
 }
